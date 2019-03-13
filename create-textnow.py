@@ -45,29 +45,12 @@ options = Options()
 options.add_argument('--disable-gpu')  # Last I checked this was necessary
 #options.add_argument("--kiosk") #Full Screen
 
-# temp_driver = webdriver.Chrome(chrome_driver, chrome_options = options)
-# temp_driver.get("https://temp-mail.org/en/")
-
-#text_driver = webdriver.Firefox(executable_path=r'chromedriver\\geckodriver.exe')
-text_driver = webdriver.Chrome(chrome_driver, chrome_options = options)
-text_driver.get("https://www.textnow.com/signup?ref=NonSale-GatewaySlot3")
+temp_driver = webdriver.Chrome(chrome_driver, chrome_options = options)
+temp_driver.get("https://temp-mail.org/en/")
 
 actionChains = ActionChains(text_driver)
+
 #Temp Email address.
-# tempEmail = temp_driver.execute_script("return document.getElementById('mail').value;")
-# print tempEmail 
+tempEmail = temp_driver.execute_script("return document.getElementById('mail').value;")
+print (tempEmail) 
 
-
-emailInput = text_driver.find_element_by_xpath("//input[contains(@name, 'email')]") 
-emailInput.send_keys('input2323232323@gmail.com')
-pwInput = text_driver.find_element_by_xpath("//input[contains(@name, 'password')]") 
-pwInput.send_keys('input@gmail.com')
-submitBtn = text_driver.find_element_by_xpath("//button[contains(@type, 'submit')]") 
-submitBtn.click()
-print "==============="
-print emailInput
-
-
-# text_driver.find_element_by_name("password").send_keys('testpassword') 
-# text_driver.find_element_by_class("uikit-button--branded").click()
-#time.sleep(3)
