@@ -1,15 +1,16 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+# from selenium.common.exceptions import TimeoutException
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
 import sys
 import urllib
 import requests
+from reCaptch import runCaptcha
 
 def waitPage(pDriver, pId, pTimeout=10):
     element_present = EC.presence_of_element_located((By.ID, pId))
@@ -38,19 +39,38 @@ def waitPage(pDriver, pId, pTimeout=10):
 # email = data[1]
 # password = data[2]
 # webinarID = data[3]
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.add_argument('--no-sandbox')
+# chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--disable-gpu')
+# driver = webdriver.Chrome(chrome_options=chrome_options)
 
-chrome_driver = "chromedriver\\chromedriver.exe"
-options = Options()
-#options.add_argument('--headless')
+chrome_driver = "chromedriver"
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
 options.add_argument('--disable-gpu')  # Last I checked this was necessary
 #options.add_argument("--kiosk") #Full Screen
 
-temp_driver = webdriver.Chrome(chrome_driver, chrome_options = options)
+temp_driver = webdriver.Chrome(chrome_driver)
 temp_driver.get("https://temp-mail.org/en/")
 
-actionChains = ActionChains(text_driver)
+actionChains = ActionChains(temp_driver)
 
 #Temp Email address.
 tempEmail = temp_driver.execute_script("return document.getElementById('mail').value;")
-print (tempEmail) 
+print (tempEmail)
+
+result = runCaptcha(tempEmail)
+
+print (result)
+
+defaultPwd = "textpassword12345"
+
+filepath = "./initalParam.txt"
+
+with open(filepath, 'a+') as theFile:
+    # Return a list of lines (strings)
+    theFile.write("%s, %s\r\n" % (tempEmail, defaultPwd) )
+    theFile.close()
+
 
